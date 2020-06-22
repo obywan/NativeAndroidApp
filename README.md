@@ -3,7 +3,7 @@
 1. Download this project and [project exported from Unity](https://github.com/obywan/androidUnityDemo) to same dir
 2. Open this project and add `androidUnityDemo` as a module by following these steps:
 
-- Open gradle.settings and add these lines to end of file:
+- Open settings.gradle and add these lines to end of file:
 ```
 include ':unityLibrary'
 project(':unityLibrary').projectDir=new File('..\\androidUnityDemo\\unityLibrary')
