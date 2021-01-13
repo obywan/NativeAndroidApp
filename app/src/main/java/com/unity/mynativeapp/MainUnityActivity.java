@@ -10,8 +10,16 @@ import android.widget.FrameLayout;
 //OverrideUnityActivity class lives in unity application
 import com.company.product.OverrideUnityActivity;
 
+import static com.unity.mynativeapp.MainActivity.SCENE_EXTRA;
+import static com.unity.mynativeapp.MainActivity.UNLOAD_EXTRA;
+
 // extend OverrideUnityActivity and override it's methods to handle lifecycle events
 public class MainUnityActivity extends OverrideUnityActivity {
+
+//    final String SCENE_EXTRA = "sceneToLoad";
+    final String RECEIVER_GAME_OBJECT_NAME = "Main Camera";
+    final String RECEIVER_METHOD_NAME = "DebugSceneLoadingCall";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +43,18 @@ public class MainUnityActivity extends OverrideUnityActivity {
             if(mUnityPlayer != null) {
                 finish();
             }
+
+        if(intent.getExtras().containsKey(SCENE_EXTRA))
+        {
+            SendMessageToLoadScene(intent.getExtras().getString(SCENE_EXTRA));
+        }
     }
 
     @Override
     protected void showMainActivity(String setToColor) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("setColor", setToColor);
+        intent.putExtra(UNLOAD_EXTRA, "yes");
         startActivity(intent);
     }
 
@@ -49,6 +62,11 @@ public class MainUnityActivity extends OverrideUnityActivity {
         showMainActivity("");
     }
 
+
+    public void SendMessageToLoadScene(String scene)
+    {
+        mUnityPlayer.UnitySendMessage(RECEIVER_GAME_OBJECT_NAME, RECEIVER_METHOD_NAME, scene);
+    }
 
     // you can add native UI elements to layout (not used here)
     public void addControlsToUnityFrame() {

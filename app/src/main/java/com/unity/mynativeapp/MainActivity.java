@@ -1,16 +1,21 @@
 package com.unity.mynativeapp;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     boolean isUnityLoaded = false;
+
+    public static final String SCENE_EXTRA = "sceneToLoad";
+    public static final String UNLOAD_EXTRA = "unloadUnity";
+    public final String SCORPION_SCENE = "scorpionscenear";
+    public final String LANG_ENGLISH = "|English";
+    public final String LANG_ARABIC = "|Arabic";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +39,8 @@ public class MainActivity extends AppCompatActivity {
     void handleIntent(Intent intent) {
         if(intent == null || intent.getExtras() == null) return;
 
-        if(intent.getExtras().containsKey("setColor")){
-            View v = findViewById(R.id.button2);
-            switch (intent.getExtras().getString("setColor")) {
-                case "yellow": v.setBackgroundColor(Color.YELLOW); break;
-                case "red": v.setBackgroundColor(Color.RED); break;
-                case "blue": v.setBackgroundColor(Color.BLUE); break;
-                default: break;
-            }
+        if(intent.getExtras().containsKey(UNLOAD_EXTRA)){
+            unloadUnity(true);
         }
     }
 
@@ -50,6 +49,24 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainUnityActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivityForResult(intent, 1);
+    }
+
+    public void btnLoadScorpionEnglish(View v)
+    {
+        isUnityLoaded = true;
+        Intent intent = new Intent(this, MainUnityActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.putExtra(SCENE_EXTRA, SCORPION_SCENE + LANG_ENGLISH);
+        startActivity(intent);
+    }
+
+    public void btnLoadScorpionArabic(View v)
+    {
+        isUnityLoaded = true;
+        Intent intent = new Intent(this, MainUnityActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.putExtra(SCENE_EXTRA, SCORPION_SCENE + LANG_ARABIC);
+        startActivity(intent);
     }
 
     @Override
